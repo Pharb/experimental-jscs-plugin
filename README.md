@@ -1,8 +1,7 @@
-# jscs support plugin for Intellij IDEs (alpha PREVIEW version)
+# jscs support plugin for Intellij IDEs
 Interactive live-check using jscs of the JavaScript file you are currently viewing or working on.
 ## Supported environments:
 * Only Linux operating systems are currently supported (tested only on Ubuntu based systems)
-
 * Tested IDEs:
  * IntelliJ IDEA Ultimate 13.1 and higher, PyCharm Ultimate 3.1 and higher
 * Untested, but should be working:
@@ -11,7 +10,7 @@ Interactive live-check using jscs of the JavaScript file you are currently viewi
 
 ## Getting Started
 
-(_This will change in a future version_)
+(_This will change in future versions._)
 
 You have to install the latest [developer version of jscs](https://github.com/mdevils/node-jscs) globally to use this plugin currently:
 
