@@ -21,11 +21,11 @@ You have to install the latest [developer version of jscs](https://github.com/md
 
 * Currently you have to install this plugin manually: 
 
- * Download newest version from the __dist__ directory
+ * Download newest [release here](https://github.com/Pharb/jscs-intellij-plugin/releases)
  * Open _Settings_ 
  * Go to _Plugins_
  * Select _Install_ _plugin_ _from_ _disk..._
- * Choose the downloaded __jscsPluginSupport-< VERSION >.jar__ file
+ * Choose the downloaded __jscs-intellij-plugin-< VERSION >.jar__ file
  * Restart your IDE
 
 ## Support
