@@ -1,4 +1,4 @@
-# jscs support plugin for Intellij IDEsk (PREVIEW)
+# jscs support plugin for Intellij IDEs (alpha PREVIEW version)
 Interactive live-check using jscs of the JavaScript file you are currently viewing or working on.
 ## Supported environments:
 * Only Linux operating systems are currently supported (tested only on Ubuntu based systems)
@@ -33,7 +33,7 @@ You have to install the latest [developer version of jscs](https://github.com/md
 
 
 ## License
-This project is licensed under the MIT License. See [LICENSE](https://github.com/Pharb/jscs-intellij-plugin/blob/master/LICENSE).
+This project is licensed under the MIT License. See [LICENSE](/LICENSE).
 
 
 * This was inspired by: [idok/eslint-plugin](https://github.com/idok/eslint-plugin)
