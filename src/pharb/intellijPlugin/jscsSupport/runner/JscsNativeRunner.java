@@ -17,7 +17,7 @@ public class JscsNativeRunner {
 
 
             BufferedWriter outputWriter = new BufferedWriter(new OutputStreamWriter((createdProcess.getOutputStream())));
-            outputWriter.write(rawFileContent); //TOdO make sure it's UTF-8
+            outputWriter.write(rawFileContent); //TODO make sure it's UTF-8
             outputWriter.close();
 
             BufferedReader inputReader = new BufferedReader(new InputStreamReader((createdProcess.getInputStream())));
