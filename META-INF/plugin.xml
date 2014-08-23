@@ -1,0 +1,48 @@
+<idea-plugin version="2">
+    <id>pharb.intellijPlugin.jscs.id</id>
+    <name>jscs plugin</name>
+    <version>0.1.0</version>
+    <vendor url="https://github.com/Pharb/jscs-intellij-plugin">Pharb</vendor>
+
+    <description><![CDATA[
+      Add jscs support for JavaScript inspection.
+    ]]></description>
+
+    <change-notes><![CDATA[
+      0.1.0: Alpha preview release. Support for jscs real time checks in file editor.
+    ]]>
+    </change-notes>
+
+    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="131"/>
+
+    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+         on how to target different products -->
+    <depends>com.intellij.modules.lang</depends>
+    <depends>JavaScript</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <localInspection language="JavaScript"
+                         enabledByDefault="true" level="ERROR"
+                         implementationClass="pharb.intellijPlugin.jscsSupport.inspection.JscsInspection"
+                         shortName="Jscs"
+                         hasStaticDescription="true"
+                         displayName="jscs Plugin"/>
+    </extensions>
+
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
+
+    <project-components>
+        <!-- Add your project components here -->
+        <component>
+            <implementation-class>pharb.intellijPlugin.jscsSupport.JscsProjectComponent</implementation-class>
+        </component>
+    </project-components>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+
+</idea-plugin>
