@@ -1,14 +1,14 @@
 package pharb.intellijPlugin.jscsSupport;
 
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogBuilder;
 import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
+import pharb.intellijPlugin.jscsSupport.dialog.JscsDialog;
 
 public class JscsProjectComponent implements ProjectComponent {
+
+    public final String VERSION = "0.1.0";
 
     private final Project project;
 
@@ -17,7 +17,7 @@ public class JscsProjectComponent implements ProjectComponent {
     }
 
     public void initComponent() {
-        // TODO: insert component initialization logic here
+        JscsDialog.init(project);
     }
 
     public void disposeComponent() {
@@ -30,20 +30,14 @@ public class JscsProjectComponent implements ProjectComponent {
     }
 
     public void projectOpened() {
-        DialogBuilder dialog = new DialogBuilder(project);
-        dialog.setTitle("jscs plugin Warning");
+        String key = "jscsPluginVersionLastUsed";
+        PropertiesComponent properties = PropertiesComponent.getInstance();
+        String versionLastUsed = properties.getValue(key);
 
-        JTextComponent centerText = new JTextPane();
-        centerText.setText("This jscs plugin is currently a pre-alpha prototype. \n\n" +
-                "You have to install the latest jscs development version globally to use this plugin currently: \n\n" +
-                "sudo npm install -g mdevils/node-jscs \n\n\n" +
-                "Only Linux is currently supported.\n" +
-                "Make sure .jscsrc is in the project root directory! \n");
-        dialog.setCenterPanel(centerText);
-
-        dialog.setOkActionEnabled(true);
-
-        dialog.show();
+        if (versionLastUsed == null || !versionLastUsed.equals(VERSION)) {
+            properties.setValue(key, VERSION);
+            JscsDialog.showPluginFirstUseDialog();
+        }
     }
 
     public void projectClosed() {

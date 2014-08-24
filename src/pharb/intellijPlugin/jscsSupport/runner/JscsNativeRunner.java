@@ -1,5 +1,6 @@
 package pharb.intellijPlugin.jscsSupport.runner;
 
+import pharb.intellijPlugin.jscsSupport.dialog.JscsDialog;
 import pharb.intellijPlugin.jscsSupport.error.ErrorReporter;
 
 import java.io.*;
@@ -8,13 +9,18 @@ import java.nio.charset.StandardCharsets;
 public class JscsNativeRunner {
 
     /**
-     * Milliseconds to wait between checking is process is still running.
+     * Milliseconds to wait between checking if process is still running.
      */
     private static final long PROCESS_CHECK_INTERVALL = 100;
 
-    private static final long PROCESS_TIMEOUT_INTERVALL = 5000;
+    /**
+     * Timeout in milliseconds after which the process is considered to not respond anymore.
+     */
+    private static final long PROCESS_TIMEOUT_INTERVALL = 10_000;
 
     private final String workingDirectory;
+
+    private boolean interruptDialogShown = false;
 
     public JscsNativeRunner(String workingDirectory) {
         this.workingDirectory = workingDirectory;
@@ -40,20 +46,45 @@ public class JscsNativeRunner {
         return new ProcessBuilder("jscs", "-r", "checkstyle", "-v", "-").directory(new File(workingDirectory)).start();
     }
 
-    private void monitorRunnerThread(Thread jscsRunnerThread) throws InterruptedException {
-        Long runnerStart = System.nanoTime();
+    private void monitorRunnerThread(final Thread jscsRunnerThread) throws InterruptedException {
+        Long runnerTimeoutStart = System.nanoTime();
         jscsRunnerThread.start();
 
         while (jscsRunnerThread.isAlive()) {
             wait(PROCESS_CHECK_INTERVALL);
-            if ((System.nanoTime() - runnerStart) / 1_000_000 > PROCESS_TIMEOUT_INTERVALL) {
-                System.out.println("interrupting thread after timeout!");
-                jscsRunnerThread.interrupt();
+            if ((System.nanoTime() - runnerTimeoutStart) / 1_000_000 > PROCESS_TIMEOUT_INTERVALL) {
+                System.out.println("timeout, ask for interrupt!");
+                runnerTimeoutStart = System.nanoTime();
+
+                askForInterrupt(new Runnable() {
+                    @Override
+                    public void run() {
+                        setInterruptDialogShown(false);
+                        jscsRunnerThread.interrupt();
+                    }
+                });
             }
             System.out.println(jscsRunnerThread.getState() + " " + System.nanoTime());
         }
     }
 
+    private void askForInterrupt(Runnable interruptRunnable) {
+        Runnable cancelRunnable = new Runnable() {
+            @Override
+            public void run() {
+                setInterruptDialogShown(false);
+            }
+        };
+
+        if (!interruptDialogShown) {
+            setInterruptDialogShown(true);
+            JscsDialog.showAskForInterruptDialog(interruptRunnable, cancelRunnable);
+        }
+    }
+
+    private void setInterruptDialogShown(boolean interruptDialogShown) {
+        this.interruptDialogShown = interruptDialogShown;
+    }
 
     private class JscsRunnable implements Runnable {
         private final String rawFileContent;
@@ -80,14 +111,14 @@ public class JscsNativeRunner {
                     createdProcess.waitFor();
                 } catch (InterruptedException e) {
                     createdProcess.destroy();
-                    ErrorReporter.throwJscsExecutionFailed("jscs process was interrupted, possibly after timeout!", e);
+                    System.out.println("Jscs thread got interrupted.");
                 }
 
                 while (inputReader.ready()) {
                     resultBuilder.append(inputReader.readLine());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                ErrorReporter.throwJscsExecutionFailed("Jscs process execution failed!", e);
             }
         }
     }
