@@ -3,7 +3,7 @@ Interactive live-check using jscs of the JavaScript file you are currently viewi
 ## Supported environments:
 * Only Linux operating systems are currently supported (tested only on Ubuntu based systems)
 * Tested IDEs:
- * IntelliJ IDEA Ultimate 13.1 and higher, PyCharm Ultimate 3.1 and higher
+ * IntelliJ IDEA Ultimate 13.1 and higher, PyCharm Ultimate 3.4 and higher
 * Untested, but should be working:
  * WebStorm 7 and higher, PhpStorm 7 and higher
 
