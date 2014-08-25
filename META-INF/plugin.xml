@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>pharb.intellijPlugin.jscs.id</id>
     <name>jscs plugin</name>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <vendor url="https://github.com/Pharb/jscs-intellij-plugin">Pharb</vendor>
 
     <description><![CDATA[
@@ -9,6 +9,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      0.2.0: Robust thread management. Ask to cancel jscs on large files. Ignore JSON files.
       0.1.0: Alpha preview release. Support for jscs real time checks in file editor.
     ]]>
     </change-notes>
