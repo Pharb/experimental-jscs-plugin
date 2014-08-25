@@ -8,7 +8,7 @@ import pharb.intellijPlugin.jscsSupport.dialog.JscsDialog;
 
 public class JscsProjectComponent implements ProjectComponent {
 
-    public final String VERSION = "0.1.0";
+    public final String VERSION = "0.2.0";
 
     private final Project project;
 
