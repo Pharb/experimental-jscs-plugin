@@ -16,7 +16,7 @@ public class JscsDialog {
         JscsDialog.project = project;
     }
 
-    public static void showAskForInterruptDialog(final Runnable yesRunnable, final Runnable noRunnable) {
+    public static void showAskForInterruptDialog(final String fileName, final Runnable yesRunnable, final Runnable noRunnable) {
 
         if (project == null || !project.isOpen()) {
             throw new IllegalStateException("Project in JscsDialog is not set or is closed!");
@@ -27,11 +27,11 @@ public class JscsDialog {
             public void run() {
                 int choice = Messages.showYesNoDialog(
                         project,
-                        "Jscs is not responding for 10 seconds.\n\n" +
-                                "Do you  want to stop jscs checking this file?",
+                        "Jscs is not responding for 10 seconds while checking " + fileName + ".\n\n" +
+                                "Do you  want to stop the jscs process for this file?",
                         "Jscs Not Responding",
-                        "Yes, stop jscs for this file.",
-                        "No, continue jscs for this file.",
+                        "Yes, abort for this file.",
+                        "No, continue.",
                         null
                 );
                 if (choice == YES) {
