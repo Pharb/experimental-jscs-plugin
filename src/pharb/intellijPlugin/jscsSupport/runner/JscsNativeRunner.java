@@ -35,18 +35,16 @@ public class JscsNativeRunner {
 
         final StringBuilder resultBuilder = new StringBuilder();
 
-        synchronized (jscsProcessIsRunning) {
-            if (!jscsProcessIsRunning.getAndSet(true)) {
-                try {
-                    Thread jscsRunnerThread = new Thread(new JscsRunnable(rawFileContent, resultBuilder), "jscsRunner");
-                    startAndWaitForRunnerThread(jscsRunnerThread);
-                } catch (InterruptedException e) {
-                    System.out.println("Monitor runner thread got interrupted: " + e.getMessage());
-                } finally {
-                    jscsProcessIsRunning.set(false);
-                }
-                System.out.println("jscs result: " + resultBuilder);
+        if (!jscsProcessIsRunning.getAndSet(true)) {
+            try {
+                Thread jscsRunnerThread = new Thread(new JscsRunnable(rawFileContent, resultBuilder), "jscsRunner");
+                startAndWaitForRunnerThread(jscsRunnerThread);
+            } catch (InterruptedException e) {
+                System.out.println("Monitor runner thread got interrupted: " + e.getMessage());
+            } finally {
+                jscsProcessIsRunning.set(false);
             }
+            System.out.println("jscs result: " + resultBuilder);
         }
         return resultBuilder.toString();
     }
