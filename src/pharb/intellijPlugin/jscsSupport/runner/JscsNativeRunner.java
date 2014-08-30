@@ -31,26 +31,24 @@ public class JscsNativeRunner {
         this.workingDirectory = workingDirectory;
     }
 
-    public synchronized String runJscs(final String rawFileContent) {
+    public String runJscs(final String rawFileContent) {
 
         final StringBuilder resultBuilder = new StringBuilder();
 
-        if (!jscsProcessIsRunning.getAndSet(true)) {
-            try {
-                Thread jscsRunnerThread = new Thread(new JscsRunnable(rawFileContent, resultBuilder));
-                startAndWaitForRunnerThread(jscsRunnerThread);
-            } catch (InterruptedException e) {
-                System.out.println("Monitor runner thread got interrupted: " + e.getMessage());
-            } finally {
-                jscsProcessIsRunning.set(false);
+        synchronized (jscsProcessIsRunning) {
+            if (!jscsProcessIsRunning.getAndSet(true)) {
+                try {
+                    Thread jscsRunnerThread = new Thread(new JscsRunnable(rawFileContent, resultBuilder), "jscsRunner");
+                    startAndWaitForRunnerThread(jscsRunnerThread);
+                } catch (InterruptedException e) {
+                    System.out.println("Monitor runner thread got interrupted: " + e.getMessage());
+                } finally {
+                    jscsProcessIsRunning.set(false);
+                }
+                System.out.println("jscs result: " + resultBuilder);
             }
-            System.out.println("jscs result: " + resultBuilder);
         }
         return resultBuilder.toString();
-    }
-
-    private Process startJscsProcess() throws IOException {
-        return new ProcessBuilder("jscs", "-r", "checkstyle", "-v", "-").directory(new File(workingDirectory)).start();
     }
 
     private void startAndWaitForRunnerThread(final Thread jscsRunnerThread) throws InterruptedException {
@@ -61,7 +59,7 @@ public class JscsNativeRunner {
                 System.out.println("No longer wait on jscsCheckFinished!");
 
                 if (jscsCheckFinished.get()) {
-                    break;
+                    return;
                 } else {
                     System.out.println("PROCESS_TIMEOUT_INTERVALL reached!");
 
@@ -90,6 +88,10 @@ public class JscsNativeRunner {
         }
     }
 
+    private Process startJscsProcess() throws IOException {
+        return new ProcessBuilder("jscs", "-r", "checkstyle", "-v", "-").directory(new File(workingDirectory)).start();
+    }
+
     private class JscsRunnable implements Runnable {
         private final String rawFileContent;
         private final StringBuilder resultBuilder;
@@ -101,13 +103,14 @@ public class JscsNativeRunner {
 
         @Override
         public void run() {
-            jscsCheckFinished.set(false);
             try {
                 Process createdProcess = startJscsProcess();
 
                 OutputStreamWriter streamWriter = new OutputStreamWriter(createdProcess.getOutputStream(), StandardCharsets.UTF_8);
                 BufferedWriter outputWriter = new BufferedWriter(streamWriter);
-                BufferedReader inputReader = new BufferedReader(new InputStreamReader(createdProcess.getInputStream()));
+
+                InputStreamReader streamReader = new InputStreamReader(createdProcess.getInputStream(), StandardCharsets.UTF_8);
+                BufferedReader inputReader = new BufferedReader(streamReader);
 
                 outputWriter.write(rawFileContent);
                 outputWriter.close();
