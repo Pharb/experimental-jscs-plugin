@@ -50,9 +50,10 @@ public class JscsNativeRunner {
     }
 
     private void startAndWaitForRunnerThread(final Thread jscsRunnerThread) throws InterruptedException {
+        jscsRunnerThread.start();
         synchronized (jscsCheckFinished) {
-            jscsRunnerThread.start();
-            while (jscsRunnerThread.isAlive()) {
+            while (!jscsCheckFinished.get()) {
+                System.out.println("Waiting thread: " + Thread.currentThread().getName());
                 jscsCheckFinished.wait(PROCESS_TIMEOUT_INTERVALL);
                 System.out.println("No longer wait on jscsCheckFinished!");
 
@@ -81,8 +82,11 @@ public class JscsNativeRunner {
             }
         };
 
-        if (!interruptDialogShown.getAndSet(true)) {
+        if (!(jscsCheckFinished.get() || interruptDialogShown.get())) {
+            interruptDialogShown.set(true);
             JscsDialog.showAskForInterruptDialog(fileName, interruptRunnable, cancelRunnable);
+        } else {
+            System.out.println("skipped dialog show, jscsCheckFinished: " + jscsCheckFinished.get() + " dialogShown: " + interruptDialogShown.get());
         }
     }
 
@@ -120,8 +124,6 @@ public class JscsNativeRunner {
                         resultBuilder.append(inputReader.readLine());
                     }
 
-                    jscsCheckFinished.set(true);
-
                 } catch (InterruptedException e) {
                     createdProcess.destroy();
                     System.out.println("Jscs thread got interrupted.");
@@ -130,6 +132,7 @@ public class JscsNativeRunner {
                 ErrorReporter.throwJscsExecutionFailed("Jscs process execution failed!", e);
             } finally {
                 synchronized (jscsCheckFinished) {
+                    jscsCheckFinished.set(true);
                     jscsCheckFinished.notify();
                 }
             }
