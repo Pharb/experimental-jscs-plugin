@@ -41,8 +41,9 @@ public class JscsFileVisitor extends JSElementVisitor {
     private void checkJSFile(JSFile file) {
         String jscsResult = new JscsNativeRunner(
                 file.getName(),
-                file.getProject().getBaseDir().getCanonicalPath()).runJscs(file.getText()
-        );
+                file.getProject().getBaseDir().getCanonicalPath()
+        ).runJscs(file.getText());
+
         List<MessageContainer> problemMessages = CheckstyleXMLParser.parse(jscsResult);
 
         for (MessageContainer message : problemMessages) {

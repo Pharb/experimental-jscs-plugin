@@ -45,10 +45,7 @@ public class JscsNativeRunner {
                 jscsProcessIsRunning.set(false);
             }
             System.out.println("jscs result: " + resultBuilder);
-        } else {
-            ErrorReporter.throwPluginException("WIP: Tried to run jscs multiple times!");
         }
-
         return resultBuilder.toString();
     }
 
