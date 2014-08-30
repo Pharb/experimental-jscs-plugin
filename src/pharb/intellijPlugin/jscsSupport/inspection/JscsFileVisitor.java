@@ -4,6 +4,8 @@ import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.lang.Language;
 import com.intellij.lang.javascript.psi.JSElementVisitor;
 import com.intellij.lang.javascript.psi.JSFile;
+import com.intellij.openapi.editor.Document;
+import com.intellij.psi.PsiDocumentManager;
 import pharb.intellijPlugin.jscsSupport.parser.CheckstyleXMLParser;
 import pharb.intellijPlugin.jscsSupport.parser.MessageContainer;
 import pharb.intellijPlugin.jscsSupport.runner.JscsNativeRunner;
@@ -22,7 +24,7 @@ public class JscsFileVisitor extends JSElementVisitor {
     public void visitJSFile(final JSFile file) {
         super.visitFile(file);
 
-        if (isJavaScriptFile(file)) {
+        if (isJavaScriptFile(file) && !isVisitingSuppressed(file)) {
             System.out.println("Visiting: " + file.getVirtualFile().getCanonicalPath());
             checkJSFile(file);
         }
@@ -36,6 +38,11 @@ public class JscsFileVisitor extends JSElementVisitor {
      */
     private boolean isJavaScriptFile(JSFile file) {
         return file.getLanguage().is(Language.findLanguageByID("JavaScript"));
+    }
+
+    private boolean isVisitingSuppressed(JSFile file) {
+        Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
+        return document.getLineCount() > 1000; //TODO: show dialog
     }
 
     private void checkJSFile(JSFile file) {
