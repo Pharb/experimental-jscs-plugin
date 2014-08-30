@@ -16,15 +16,18 @@ import java.util.List;
 public class CheckstyleXMLParser {
 
     public static List<MessageContainer> parse(final String rawXML) {
-        Document document = getDocument(rawXML);
         List<MessageContainer> result = new ArrayList<>();
 
-        NodeList fileNodes = document.getDocumentElement().getChildNodes();
+        if (rawXML.length() > 0) {
+            Document document = getDocument(rawXML);
+            if (document != null) {
+                NodeList fileNodes = document.getDocumentElement().getChildNodes();
 
-        for (int i = 0; i < fileNodes.getLength(); i++) {
-            result.addAll(processFileNode(fileNodes.item(i)));
+                for (int i = 0; i < fileNodes.getLength(); i++) {
+                    result.addAll(processFileNode(fileNodes.item(i)));
+                }
+            }
         }
-
         return result;
     }
 
@@ -62,7 +65,7 @@ public class CheckstyleXMLParser {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             document = builder.parse(new InputSource(new StringReader(rawXML)));
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         return document;
     }
