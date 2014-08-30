@@ -6,6 +6,7 @@ import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.lang.javascript.JSBundle;
 import com.intellij.lang.javascript.inspections.JSInspection;
 import com.intellij.lang.javascript.psi.JSFile;
+import com.intellij.openapi.editor.Document;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
@@ -22,7 +23,7 @@ public class JscsInspection extends JSInspection {
     }
 
     private static PsiElement findPsiElement(int line, int column, JSFile file) {
-        com.intellij.openapi.editor.Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
+        Document document = PsiDocumentManager.getInstance(file.getProject()).getDocument(file);
 
         //intellij starts counting here at line 0 and column 0
         int elementOffset = document.getLineStartOffset(line - 1) + (column - 1);
