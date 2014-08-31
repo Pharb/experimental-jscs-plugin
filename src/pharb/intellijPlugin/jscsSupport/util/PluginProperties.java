@@ -8,7 +8,7 @@ import static pharb.intellijPlugin.jscsSupport.util.PluginProperties.GlobalPlugi
 
 public class PluginProperties {
 
-    public static final String VERSION = "0.2.0";
+    public static final String VERSION = "0.3.0";
 
     private static PropertiesComponent properties = PropertiesComponent.getInstance();
 
@@ -35,7 +35,6 @@ public class PluginProperties {
         String[] requiredVersion = JSCS_NATIVE_MIN_VERSION_REQUIREMENT.get().split("\\.");
         String[] nativeVersion = nativeVersionString.split("\\.");
 
-
         return Integer.parseInt(nativeVersion[0]) >= Integer.parseInt(requiredVersion[0])
                 && Integer.parseInt(nativeVersion[1]) >= Integer.parseInt(requiredVersion[1])
                 && Integer.parseInt(nativeVersion[2]) >= Integer.parseInt(requiredVersion[2]);
@@ -44,7 +43,7 @@ public class PluginProperties {
     public static enum GlobalPluginProperties {
 
         JSCS_PLUGIN_VERSION_LAST_USED("jscsPluginVersionLastUsed", "0.0.0"),
-        JSCS_NATIVE_MIN_VERSION_REQUIREMENT("jscsNativeMinVersionRequirement", "1.6.1");
+        JSCS_NATIVE_MIN_VERSION_REQUIREMENT("jscsNativeMinVersionRequirement", "1.6.0");
 
         private final String key;
         private final String defaultValue;

@@ -9,6 +9,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      0.3.0: Check jscs version. Improve error handling. Ignore large (>1000 lines) files.
       0.2.0: Robust thread management. Ask to cancel jscs on large files. Ignore JSON files.
       0.1.0: Alpha preview release. Support for jscs real time checks in file editor.
     ]]>
