@@ -12,15 +12,15 @@ Interactive live-check using jscs of the JavaScript file you are currently viewi
 
 (_This will change in future versions._)
 
-You have to install the latest [developer version of jscs](https://github.com/mdevils/node-jscs) globally to use this plugin currently:
+You have to install jscs 1.6.0 or later globally to use this plugin currently:
 
-```sudo npm install -g mdevils/node-jscs```
+```sudo npm install -g jscs```
 
 * Make sure .jscsrc is in the project root directory!
 
 * Currently you have to install this plugin manually: 
 
- * Download newest [release here](https://github.com/Pharb/jscs-intellij-plugin/releases)
+ * Download latest [release here](https://github.com/Pharb/jscs-intellij-plugin/releases)
  * Open _Settings_ 
  * Go to _Plugins_
  * Select _Install_ _plugin_ _from_ _disk..._
@@ -28,7 +28,7 @@ You have to install the latest [developer version of jscs](https://github.com/md
  * Restart your IDE
 
 ## Support
-**Feel free to test this alpha preview and use the issue tracker for feedback.**
+**Feel free to test the latest alpha version and use the issue tracker for feedback.**
 
 
 ## License

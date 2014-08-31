@@ -31,6 +31,23 @@ public class JscsNativeRunner {
         this.workingDirectory = workingDirectory;
     }
 
+    public static String getJscsVersion() {
+        String version = "0.0.0";
+        try {
+            Process jscsProcess = new ProcessBuilder("jscs", "--version").start();
+
+            InputStreamReader streamReader = new InputStreamReader(jscsProcess.getInputStream(), StandardCharsets.UTF_8);
+            BufferedReader inputReader = new BufferedReader(streamReader);
+
+            version = inputReader.readLine();
+            inputReader.close();
+
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+        return version;
+    }
+
     public String runJscs(final String rawFileContent) {
 
         final StringBuilder resultBuilder = new StringBuilder();

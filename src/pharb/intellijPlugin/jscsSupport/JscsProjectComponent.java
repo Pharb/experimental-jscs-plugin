@@ -6,11 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import pharb.intellijPlugin.jscsSupport.dialog.JscsDialog;
 import pharb.intellijPlugin.jscsSupport.util.PluginProperties;
 
-import static pharb.intellijPlugin.jscsSupport.util.PluginProperties.GlobalPluginProperties;
-
 public class JscsProjectComponent implements ProjectComponent {
 
-    public static final String VERSION = "0.2.0";
 
     private final Project project;
 
@@ -33,7 +30,7 @@ public class JscsProjectComponent implements ProjectComponent {
 
     public void projectOpened() {
         if (PluginProperties.isVersionFirstUsed()) {
-            GlobalPluginProperties.JSCS_PLUGIN_VERSION_LAST_USED.set(VERSION);
+            PluginProperties.setVersionUsed();
             JscsDialog.showPluginFirstUseDialog();
         }
     }
