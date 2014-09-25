@@ -1,4 +1,4 @@
-# jscs support plugin for Intellij IDEs
+# This is currently no longer maintained. Please use https://github.com/idok/jscs-plugin instead.
 Interactive live-check using jscs of the JavaScript file you are currently viewing or working on.
 ## Supported environments:
 * Only Linux operating systems are currently supported (tested only on Ubuntu based systems)
