@@ -1,4 +1,4 @@
-# This is currently no longer maintained. Please use https://github.com/idok/jscs-plugin instead.
+# This is currently no longer maintained. Please use the official built-in tool instead.
 Interactive live-check using jscs of the JavaScript file you are currently viewing or working on.
 ## Supported environments:
 * Only Linux operating systems are currently supported (tested only on Ubuntu based systems)
